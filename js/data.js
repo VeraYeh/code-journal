@@ -7,30 +7,15 @@ var data = {
   nextEntryId: 1
 };
 
-const $userPhotoUrl = document.querySelector('.photo-url');
-const $imgSrc = document.querySelector('.img-src');
-
-$userPhotoUrl.addEventListener('input', function (event) {
-  const imgSrc = event.target.value;
-  $imgSrc.setAttribute('src', imgSrc);
+// Save entire data in local storage
+window.addEventListener('beforeunload', function () {
+  const allEntriesJSON = JSON.stringify(data);
+  localStorage.setItem('code-journal-data', allEntriesJSON);
 });
 
-const $form = document.querySelector('form.container');
+// Get data from local storage and save in variable data.
+const localAllEntries = localStorage.getItem('code-journal-data');
 
-$form.addEventListener('submit', function (event) {
-  event.preventDefault();
-  const journalData = {
-    title: $form.elements.title.value,
-    photoURL: $form.elements.photoURL.value,
-    notes: $form.elements.notes.value,
-    entryID: 0
-  };
-  data.nextEntryId += 1;
-  journalData.entryID = data.nextEntryId - 1;
-  data.entries.unshift(journalData);
-  $imgSrc.src = 'images/placeholder-image-square.jpg';
-  $form.reset();
-
-  const entriesJSON = JSON.stringify(data.entries);
-  localStorage.setItem('code-journal-local-storage', entriesJSON);
-});
+if (localAllEntries !== null) {
+  data = JSON.parse(localAllEntries);
+}

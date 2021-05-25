@@ -21,15 +21,19 @@
     <div>
       <div class="container">
         <div class="row">
-          <div class="column-full">
+          <div class="column-full nav">
             <p>Code Journal</p>
+            <ol>
+              <li><a class="entryButton">Entries</a></li>
+            </ol>
           </div>
         </div>
       </div>
     </div>
   </header>
   <main>
-    <div data-view="entry-form">
+    <!--Entry Form Section-->
+    <div data-view="entry-form" class="entryForm">
       <form class="container">
         <div class="row">
           <div class="column-full">
@@ -38,7 +42,7 @@
         </div>
         <div class="row">
           <div class="column-half">
-            <img class="img-src" src="images/placeholder-image-square.jpg" alt="images">
+            <img src="images/placeholder-image-square.jpg" alt="images">
           </div>
           <div class="column-half">
             <label for="title">Title</label>
@@ -55,10 +59,30 @@
         </div>
         <div class="row">
           <div class="column-full button">
-            <label><button type="submit">SAVE</button></label>
+            <label><button type="submit" class="save">SAVE</button></label>
           </div>
         </div>
       </form>
+    </div>
+    <!--Entries View Section-->
+    <div data-view="entries" class="hidden">
+      <div class="container">
+        <div class="row">
+          <div class="column-full">
+            <h1>Entries</h1>
+            <a class="newButton button">NEW</a>
+          </div>
+        </div>
+      </div>
+      <ul>
+        <div class="container">
+          <div class="row">
+            <div class="column-full">
+              <p class="message">No Entries have been recorded.</p>
+            </div>
+          </div>
+        </div>
+      </ul>
     </div>
   </main>
   <script src="js/data.js"></script>

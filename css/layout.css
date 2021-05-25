@@ -32,3 +32,14 @@
     width: 50%;
   }
 }
+
+[data-view="entries"] .column-full {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+[data-view="entries"] .column-half {
+  margin-bottom: 30px;
+}
