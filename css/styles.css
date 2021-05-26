@@ -51,3 +51,56 @@ textarea:focus {
 .button {
   text-align: end;
 }
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+[data-view="entries"] h2 {
+  margin: 0;
+}
+
+[data-view="entries"] p {
+  color: black;
+  font-size: 0.9em;
+}
+
+ol li {
+  color: white;
+  list-style-type: none;
+}
+
+.nav {
+  display: flex;
+}
+
+.nav p {
+  width: 9em;
+}
+
+.newButton {
+  width: 83px;
+  height: 28px;
+  background-color: rgb(86, 43, 129);
+  color: white;
+  border-radius: 4px;
+  border-style: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85em;
+}
+
+.hidden {
+  display: none;
+}
+
+.entryButton {
+  cursor: pointer;
+}
+
+.message {
+  text-align: center;
+}
