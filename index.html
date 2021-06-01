@@ -37,7 +37,7 @@
       <form class="container">
         <div class="row">
           <div class="column-full">
-            <h1>New Entry</h1>
+            <h1 class="entryType">New Entry</h1>
           </div>
         </div>
         <div class="row">
@@ -59,10 +59,22 @@
         </div>
         <div class="row">
           <div class="column-full button">
+            <label><button class="delete-entry">Delete Entry</button></label>
             <label><button type="submit" class="save">SAVE</button></label>
           </div>
         </div>
       </form>
+    </div>
+    <div class="overlay hidden">
+      <div class="modal">
+        <div>
+          <h5>Are you sure you want to delete thie entry?</h5>
+        </div>
+        <div class="modal-buttons">
+          <button class="cancel">CANCEL</button>
+          <button class="confirm">CONFIRM</button>
+        </div>
+      </div>
     </div>
     <!--Entries View Section-->
     <div data-view="entries" class="hidden">
@@ -72,18 +84,14 @@
             <h1>Entries</h1>
             <a class="newButton button">NEW</a>
           </div>
-        </div>
-      </div>
-      <ul>
-        <div class="container">
-          <div class="row">
+          <div class="row" id="message">
             <div class="column-full">
-              <p class="message">No Entries have been recorded.</p>
+              <p>No Entries have been recorded.</p>
             </div>
           </div>
         </div>
-
-      </ul>
+      </div>
+      <ul></ul>
     </div>
   </main>
   <script src="js/data.js"></script>

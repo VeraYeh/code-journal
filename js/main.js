@@ -9,7 +9,12 @@ const $entryForm = document.querySelector('[data-view="entry-form"]');
 const $entries = document.querySelector('[data-view="entries"]');
 const $entriesButton = document.querySelector('.entryButton');
 const $newButton = document.querySelector('.newButton');
-const $message = document.querySelector('.message');
+const $message = document.querySelector('#message');
+const $deleteButton = document.querySelector('.delete-entry');
+const $modalView = document.querySelector('.overlay');
+const $cancelButton = document.querySelector('.cancel');
+const $confirmButton = document.querySelector('.confirm');
+const $entryType = document.querySelector('.entryType');
 
 // Change img src attribute when user input.
 $userPhotoUrl.addEventListener('input', function (event) {
@@ -17,7 +22,7 @@ $userPhotoUrl.addEventListener('input', function (event) {
   $imgSrc.src = imgSrc;
 });
 
-// Form submit event listener and function.
+// Entry form submit event listener and function.
 $form.addEventListener('submit', function (event) {
   event.preventDefault();
   const journalData = {
@@ -27,7 +32,7 @@ $form.addEventListener('submit', function (event) {
   };
   const editEntryID = $form.getAttribute('editEntryID');
   // if submitting an edit
-  if (editEntryID !== null) {
+  if (editEntryID > 0) {
     // replace entries with updated values
     for (let i = 0; i < data.entries.length; i++) {
       if (data.entries[i].entryID.toString() === editEntryID) {
@@ -47,13 +52,13 @@ $form.addEventListener('submit', function (event) {
       $entryList.appendChild(reAppendValue);
     }
   } else {
-    // if submitting an new entry
+    // if submitting an new entry, update data object
     data.entries.unshift(journalData);
     data.nextEntryId++;
     journalData.entryID = data.nextEntryId - 1;
     $entryList.prepend(appendEntries(data.entries[0]));
   }
-
+  // reset form and clear form inputs
   $form.reset();
   $imgSrc.src = 'images/placeholder-image-square.jpg';
   $entryForm.className = 'hidden';
@@ -66,6 +71,7 @@ $form.addEventListener('submit', function (event) {
 function appendEntries(entry) {
 
   const listItem = document.createElement('li');
+  listItem.setAttribute('entry-id', entry.entryID);
 
   const divContainer = document.createElement('div');
   divContainer.className = 'container';
@@ -117,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     $entries.className = 'hidden';
     $entryForm.className = '';
     $message.className = 'hidden';
+    $deleteButton.className = 'hidden';
   } else if (data.view === 'entries' && data.entries.length > 0) {
     $entries.className = '';
     $entryForm.className = 'hidden';
@@ -124,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
   } else if (data.view === 'entries' && data.entries.length === 0) {
     $entries.className = '';
     $entryForm.className = 'hidden';
+    $message.className = 'message';
   }
 });
 
@@ -137,6 +145,9 @@ $newButton.addEventListener('click', function (event) {
   $form.elements.photoURL.value = '';
   $form.elements.notes.value = '';
   $imgSrc.src = 'images/placeholder-image-square.jpg';
+  $deleteButton.className = 'hidden';
+  $form.setAttribute('editentryid', 0);
+  $entryType.textContent = 'New Entry';
 });
 
 // ENTRIES button click event/function
@@ -149,9 +160,10 @@ $entriesButton.addEventListener('click', function (event) {
   } else {
     $message.className = 'hidden';
   }
+  $deleteButton.className = 'delete-entry';
 });
 
-// Entries view click event
+// On Entries view click event
 $entries.addEventListener('click', function (event) {
 
   // when the click icon is clicked
@@ -159,6 +171,8 @@ $entries.addEventListener('click', function (event) {
     // hide entries and show entry form
     $entries.className = 'hidden';
     $entryForm.className = '';
+    $deleteButton.className = 'delete-entry';
+    $entryType.textContent = 'Edit Entry';
 
     // find the data entry id that the icon associated with.
     const editID = event.target.getAttribute('data-entry-id');
@@ -176,4 +190,40 @@ $entries.addEventListener('click', function (event) {
       }
     }
   }
+});
+
+// delete entry button event, open modal window
+$deleteButton.addEventListener('click', function (event) {
+  $modalView.className = 'overlay';
+  event.preventDefault();
+});
+
+// cancel button event, close modal window
+$cancelButton.addEventListener('click', function (event) {
+  $modalView.className = 'hidden';
+});
+
+// confirm button event, delete data and dom tree
+$confirmButton.addEventListener('click', function (event) {
+  $modalView.className = 'hidden';
+  for (let n = 0; n < data.entries.length; n++) {
+    // delete entry in data.
+    if (data.entries[n].entryID.toString() === $form.getAttribute('editentryid')) {
+      data.entries.splice(n, 1);
+    }
+  }
+  // delete dom tree
+  while ($entryList.firstChild) {
+    $entryList.removeChild($entryList.firstChild);
+  }
+  // re-append updated entries dom
+  for (let m = 0; m < data.entries.length; m++) {
+    const reAppendValue = appendEntries(data.entries[m]);
+    $entryList.appendChild(reAppendValue);
+  }
+  if (data.entries.length === 0) {
+    $message.className = 'message';
+  }
+  $entries.className = '';
+  $entryForm.className = 'hidden';
 });
