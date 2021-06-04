@@ -15,6 +15,7 @@ const $modalView = document.querySelector('.overlay');
 const $cancelButton = document.querySelector('.cancel');
 const $confirmButton = document.querySelector('.confirm');
 const $entryType = document.querySelector('.entryType');
+const $noMatchMessage = document.querySelector('#message .column-full p');
 
 // Change img src attribute when user input.
 $userPhotoUrl.addEventListener('input', function (event) {
@@ -42,15 +43,6 @@ $form.addEventListener('submit', function (event) {
         data.entries.splice(i, 1, data.editing[0]);
       }
     }
-    // remove all entries from DOM
-    while ($entryList.firstChild) {
-      $entryList.removeChild($entryList.firstChild);
-    }
-    // re-append updated entries
-    for (let m = 0; m < data.entries.length; m++) {
-      const reAppendValue = appendEntries(data.entries[m]);
-      $entryList.appendChild(reAppendValue);
-    }
   } else {
     // if submitting an new entry, update data object
     data.entries.unshift(journalData);
@@ -58,6 +50,9 @@ $form.addEventListener('submit', function (event) {
     journalData.entryID = data.nextEntryId - 1;
     $entryList.prepend(appendEntries(data.entries[0]));
   }
+  // reload list itmes
+  removeListItems();
+  reloadListItems();
   // reset form and clear form inputs
   $form.reset();
   $imgSrc.src = 'images/placeholder-image-square.jpg';
@@ -115,10 +110,8 @@ function appendEntries(entry) {
 
 // Dom loaded event/function
 document.addEventListener('DOMContentLoaded', function (event) {
-  for (let i = 0; i < data.entries.length; i++) {
-    const value = appendEntries(data.entries[i]);
-    $entryList.appendChild(value);
-  }
+
+  reloadListItems();
   if (data.view === 'entry-form') {
     $entries.className = 'hidden';
     $entryForm.className = '';
@@ -132,6 +125,7 @@ document.addEventListener('DOMContentLoaded', function (event) {
     $entries.className = '';
     $entryForm.className = 'hidden';
     $message.className = 'message';
+
   }
 });
 
@@ -148,6 +142,7 @@ $newButton.addEventListener('click', function (event) {
   $deleteButton.className = 'hidden';
   $form.setAttribute('editentryid', 0);
   $entryType.textContent = 'New Entry';
+
 });
 
 // ENTRIES button click event/function
@@ -157,10 +152,14 @@ $entriesButton.addEventListener('click', function (event) {
   data.view = 'entries';
   if (data.entries.length === 0) {
     $message.className = 'message';
+    $noMatchMessage.textContent = 'No Entries have been recorded.';
   } else {
     $message.className = 'hidden';
   }
   $deleteButton.className = 'delete-entry';
+
+  removeListItems();
+  reloadListItems();
 });
 
 // On Entries view click event
@@ -212,18 +211,50 @@ $confirmButton.addEventListener('click', function (event) {
       data.entries.splice(n, 1);
     }
   }
-  // delete dom tree
-  while ($entryList.firstChild) {
-    $entryList.removeChild($entryList.firstChild);
-  }
-  // re-append updated entries dom
-  for (let m = 0; m < data.entries.length; m++) {
-    const reAppendValue = appendEntries(data.entries[m]);
-    $entryList.appendChild(reAppendValue);
-  }
+  // reload list itmes
+  removeListItems();
+  reloadListItems();
   if (data.entries.length === 0) {
     $message.className = 'message';
   }
   $entries.className = '';
   $entryForm.className = 'hidden';
 });
+
+const $search = document.querySelector('.fa-search');
+const $searchInput = document.querySelector('.search-input');
+// search on entries event
+$search.addEventListener('click', function (event) {
+  event.stopPropagation();
+  removeListItems();
+  // match search and append list items
+  for (let i = 0; i < data.entries.length; i++) {
+    if (data.entries[i].title.toLowerCase().split(' ').includes($searchInput.value.toLowerCase())) {
+      const value = appendEntries(data.entries[i]);
+      $entryList.appendChild(value);
+    }
+  }
+  // if no matches, show message
+  if ($entryList.childNodes.length === 0) {
+    $message.className = 'message';
+    $noMatchMessage.textContent = 'No matching titles, try keywords like "JavaScript", "CSS"...';
+  } else {
+    $message.className = 'hidden';
+  }
+  $searchInput.value = '';
+});
+
+function reloadListItems() {
+  // re-append list items
+  for (let i = 0; i < data.entries.length; i++) {
+    const reAppendValue = appendEntries(data.entries[i]);
+    $entryList.appendChild(reAppendValue);
+  }
+}
+
+function removeListItems() {
+  // remove all list items
+  while ($entryList.firstChild) {
+    $entryList.removeChild($entryList.firstChild);
+  }
+}
