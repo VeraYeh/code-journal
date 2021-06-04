@@ -95,6 +95,7 @@ ol li {
   justify-content: center;
   align-items: center;
   font-size: 0.85em;
+  margin-left: 1.5em;
 }
 
 .hidden {
@@ -174,4 +175,38 @@ i:hover {
   position: fixed;
   top: 0;
   left: 0;
+}
+
+.entries-nav {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.entries-nav div {
+  display: flex;
+  justify-content: flex-end;
+  width: fit-content;
+}
+
+.search-box {
+  display: flex;
+}
+
+.fas {
+  margin: 0 3px 3px 0;
+}
+
+.search-input {
+  margin: 0;
+  border-style: none;
+  background-color: rgb(240, 240, 240);
+  border-bottom: 1px solid rgb(86, 43, 129);
+  padding-bottom: 0;
+  border-radius: 0;
+}
+
+.search-input:focus {
+  border: none;
+  border-bottom: 1px solid rgb(86, 43, 129);
+  outline: none;
 }
