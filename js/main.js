@@ -8,7 +8,7 @@ const $entryList = document.querySelector('ul');
 const $entryForm = document.querySelector('[data-view="entry-form"]');
 const $entries = document.querySelector('[data-view="entries"]');
 const $entriesButton = document.querySelector('.entryButton');
-const $newButton = document.querySelector('.newButton');
+const $newButton = document.querySelector('.new');
 const $message = document.querySelector('#message');
 const $deleteButton = document.querySelector('.delete-entry');
 const $modalView = document.querySelector('.overlay');
@@ -16,6 +16,7 @@ const $cancelButton = document.querySelector('.cancel');
 const $confirmButton = document.querySelector('.confirm');
 const $entryType = document.querySelector('.entryType');
 const $noMatchMessage = document.querySelector('#message .column-full p');
+const $sort = document.getElementById('sort');
 
 // Change img src attribute when user input.
 $userPhotoUrl.addEventListener('input', function (event) {
@@ -29,7 +30,8 @@ $form.addEventListener('submit', function (event) {
   const journalData = {
     title: $form.elements.title.value,
     photoURL: $form.elements.photoURL.value,
-    notes: $form.elements.notes.value
+    notes: $form.elements.notes.value,
+    entryDate: new Date().toString()
   };
   const editEntryID = $form.getAttribute('editEntryID');
   // if submitting an edit
@@ -40,6 +42,7 @@ $form.addEventListener('submit', function (event) {
         data.editing[0].title = $form.elements.title.value;
         data.editing[0].photoURL = $form.elements.photoURL.value;
         data.editing[0].notes = $form.elements.notes.value;
+        data.editing[0].entryDate = new Date().toString();
         data.entries.splice(i, 1, data.editing[0]);
       }
     }
@@ -258,3 +261,21 @@ function removeListItems() {
     $entryList.removeChild($entryList.firstChild);
   }
 }
+
+// sort event, sort by date/time
+$sort.addEventListener('click', function () {
+
+  if ($sort.options[$sort.selectedIndex].value === 'newFirst') {
+    // sort by newest
+    data.entries.sort(function (a, b) {
+      return new Date(b.entryDate) - new Date(a.entryDate);
+    });
+  } else if ($sort.options[$sort.selectedIndex].value === 'oldFirst') {
+    // sort by oldest
+    data.entries.sort(function (a, b) {
+      return new Date(a.entryDate) - new Date(b.entryDate);
+    });
+  }
+  removeListItems();
+  reloadListItems();
+});
