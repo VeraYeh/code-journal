@@ -59,6 +59,7 @@ textarea:focus {
 ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 [data-view="entries"] h2 {
@@ -84,8 +85,6 @@ ol li {
 }
 
 .newButton {
-  width: 83px;
-  height: 28px;
   background-color: rgb(86, 43, 129);
   color: white;
   border-radius: 4px;
@@ -95,7 +94,7 @@ ol li {
   justify-content: center;
   align-items: center;
   font-size: 0.85em;
-  margin-left: 1.5em;
+  width: 80px;
 }
 
 .hidden {
@@ -180,12 +179,13 @@ i:hover {
 .entries-nav {
   display: flex;
   justify-content: flex-end;
+  width: fit-content;
+  margin: 10px 0;
 }
 
 .entries-nav div {
   display: flex;
-  justify-content: flex-end;
-  width: fit-content;
+  margin-left: 15px;
 }
 
 .search-box {
@@ -203,10 +203,23 @@ i:hover {
   border-bottom: 1px solid rgb(86, 43, 129);
   padding-bottom: 0;
   border-radius: 0;
+  width: 100px;
 }
 
 .search-input:focus {
   border: none;
   border-bottom: 1px solid rgb(86, 43, 129);
   outline: none;
+}
+
+h1 {
+  width: fit-content;
+  margin: 20px 0;
+}
+
+#sort {
+  width: 80px;
+  height: 29px;
+  border-radius: 4px;
+  border-color: rgb(86, 43, 129);
 }

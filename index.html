@@ -88,7 +88,17 @@
                 <input type="text" placeholder="Search title.." class="search-input">
               </div>
               <div>
-                <a class="newButton button">NEW</a>
+                <form>
+                  <label for="sort"></label>
+                    <select name="sort" id="sort">
+                      <option value="sort">Sort</option>
+                      <option value="newFirst">Newest</option>
+                      <option value="oldFirst">Oldest</option>
+                    </select>
+                </form>
+              </div>
+              <div>
+                <a class="newButton button new">NEW</a>
               </div>
             </div>
           </div>
